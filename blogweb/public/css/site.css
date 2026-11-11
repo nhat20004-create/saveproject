@@ -1,0 +1,63 @@
+:root {
+    --main: #9f224e;
+    --dark: #7a1a3b;
+    --soft: #fbeef3;
+}
+
+body { background: #f7f4f5; color: #333; font-family: Arial, sans-serif; }
+a { color: var(--main); }
+a:hover { color: var(--dark); }
+
+.brand {
+    font-size: 30px; font-weight: bold; color: var(--main);
+    letter-spacing: 1px;
+}
+.navbar { background: var(--main); }
+.navbar a, .navbar .btn-link { color: #fff !important; }
+.navbar a:hover { color: var(--soft) !important; }
+
+.content-box {
+    background: #fff; padding: 25px; margin-bottom: 25px;
+    border-radius: 5px; box-shadow: 0 1px 3px rgba(159, 34, 78, .12);
+}
+.post-image { width: 100%; height: 210px; object-fit: cover; }
+.post-image-lg { width: 100%; max-height: 420px; object-fit: cover; }
+.post-title { color: var(--main); font-weight: bold; }
+.category {
+    color: var(--dark); font-size: 13px; font-weight: bold;
+    text-transform: uppercase;
+}
+.tag-chip {
+    display: inline-block; background: var(--soft); color: var(--main);
+    border-radius: 12px; padding: 1px 10px; font-size: 12px;
+    margin: 0 4px 4px 0;
+}
+.tag-chip:hover {
+    background: var(--main); color: #fff; text-decoration: none;
+}
+.form-error { color: #c0392b; font-size: 13px; }
+
+footer {
+    background: var(--main); color: #fff; padding: 25px; margin-top: 30px;
+}
+
+.btn-primary, .btn-primary:disabled {
+    background: var(--main); border-color: var(--main);
+}
+.btn-primary:hover, .btn-primary:focus {
+    background: var(--dark); border-color: var(--dark);
+}
+.btn-outline-primary { color: var(--main); border-color: var(--main); }
+.btn-outline-primary:hover {
+    background: var(--main); border-color: var(--main);
+}
+.form-control:focus, .form-check-input:focus {
+    border-color: var(--main); box-shadow: 0 0 0 .2rem rgba(159, 34, 78, .2);
+}
+.page-item.active .page-link {
+    background: var(--main); border-color: var(--main);
+}
+.page-link { color: var(--main); }
+.badge-main { background: var(--main); color: #fff; }
+.stat-box { border-left: 5px solid var(--main); }
+.stat-box .num { font-size: 32px; font-weight: bold; color: var(--main); }

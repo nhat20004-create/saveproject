@@ -1,0 +1,994 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Phân tích chức năng - Góc Nhìn 24H</title>
+    <style>
+      :root {
+        --bg: #f6f7f9;
+        --card: #fff;
+        --tx: #1d2330;
+        --mu: #5d6676;
+        --bd: #e1e5ec;
+        --ac: #2557d6;
+        --ok: #17803d;
+        --bad: #b4281f;
+        --soft: #eef2fb;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #12151b;
+          --card: #1b2029;
+          --tx: #e8ebf1;
+          --mu: #9aa4b5;
+          --bd: #2c3340;
+          --ac: #7ea2ff;
+          --ok: #4cc983;
+          --bad: #ff8a80;
+          --soft: #222a3a;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font:
+          16px/1.65 system-ui,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+        background: var(--bg);
+        color: var(--tx);
+      }
+      header {
+        background: var(--ac);
+        color: #fff;
+        padding: 36px 20px;
+      }
+      header div,
+      main,
+      nav div {
+        max-width: 980px;
+        margin: auto;
+      }
+      header h1 {
+        margin: 0 0 8px;
+        font-size: 1.9rem;
+      }
+      header p {
+        margin: 0;
+        opacity: 0.92;
+      }
+      nav {
+        position: sticky;
+        top: 0;
+        background: var(--card);
+        border-bottom: 1px solid var(--bd);
+        z-index: 5;
+      }
+      nav div {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        padding: 10px 20px;
+      }
+      nav a {
+        padding: 4px 12px;
+        border-radius: 99px;
+        background: var(--soft);
+        color: var(--ac);
+        text-decoration: none;
+        font-size: 0.9rem;
+      }
+      main {
+        padding: 10px 20px 60px;
+      }
+      h2 {
+        margin: 40px 0 14px;
+        font-size: 1.4rem;
+        border-left: 5px solid var(--ac);
+        padding-left: 12px;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--bd);
+        border-radius: 12px;
+        padding: 18px 20px;
+        margin: 0 0 16px;
+      }
+      .card h3 {
+        margin: 0 0 10px;
+        font-size: 1.1rem;
+      }
+      .tag {
+        display: inline-block;
+        background: var(--ac);
+        color: #fff;
+        border-radius: 6px;
+        padding: 0 9px;
+        margin-right: 10px;
+        font-size: 0.85rem;
+      }
+      dl {
+        margin: 0;
+        display: grid;
+        grid-template-columns: 130px 1fr;
+        gap: 8px 16px;
+      }
+      dt {
+        font-weight: 600;
+        color: var(--mu);
+      }
+      dd {
+        margin: 0;
+      }
+      .okt {
+        color: var(--ok);
+      }
+      .bad {
+        color: var(--bad);
+      }
+      ol,
+      ul {
+        margin: 0;
+        padding-left: 20px;
+      }
+      li {
+        margin: 3px 0;
+      }
+      .tw {
+        overflow-x: auto;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 8px 0;
+        font-size: 0.95rem;
+      }
+      th,
+      td {
+        border: 1px solid var(--bd);
+        padding: 8px 10px;
+        text-align: left;
+        vertical-align: top;
+      }
+      th {
+        background: var(--soft);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 14px;
+      }
+      .grid .card {
+        margin: 0;
+      }
+      @media (max-width: 600px) {
+        dl {
+          grid-template-columns: 1fr;
+          gap: 2px;
+        }
+        dt {
+          margin-top: 8px;
+        }
+      }
+      code {
+        background: var(--soft);
+        border-radius: 4px;
+        padding: 1px 6px;
+        font-family: Consolas, monospace;
+        font-size: 0.9em;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <h1>Phân tích chức năng: Góc Nhìn 24H</h1>
+        <p>
+          Website chia sẻ tin tức và bài viết, nhiều tác giả, có quản trị, bình luận và đăng bài tự
+          động theo lịch.
+        </p>
+      </div>
+    </header>
+    <nav>
+      <div>
+        <a href="#tong-quan">Tổng quan</a>
+        <a href="#csdl">Dữ liệu</a>
+        <a href="#gA">A. Công khai</a>
+        <a href="#gB">B. Bài viết</a>
+        <a href="#gC">C. Bình luận</a>
+        <a href="#gD">D. Quản trị</a>
+        <a href="#gE">E. Xử lý nền</a>
+        <a href="#gF">F. Chất lượng</a>
+      </div>
+    </nav>
+    <main>
+      <section id="tong-quan">
+        <h2>1. Giới thiệu và tổng quan</h2>
+        <div class="card">
+          <p style="margin: 0">
+            Góc Nhìn 24H giúp người dùng cập nhật tin tức, tìm kiếm và đọc những nội dung hữu ích.
+            Thành viên có thể đăng, chỉnh sửa, quản lý bài và trao đổi qua bình luận. Quản trị viên
+            quản lý danh mục, kiểm duyệt nội dung, xem thống kê; hệ thống tự đăng bài theo lịch hẹn.
+          </p>
+        </div>
+        <h3 style="margin: 18px 0 8px">Vai trò người dùng</h3>
+        <div class="tw">
+          <table>
+            <thead>
+              <tr>
+                <th>Vai trò</th>
+                <th>Được làm gì</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Khách</td>
+                <td>Xem bài đã đăng, tìm kiếm, lọc, đăng ký tài khoản</td>
+              </tr>
+              <tr>
+                <td>Thành viên</td>
+                <td>Tạo và quản lý bài của mình, bình luận</td>
+              </tr>
+              <tr>
+                <td>Quản trị viên</td>
+                <td>Xem thống kê, quản lý danh mục, xóa bài và bình luận vi phạm</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <h3 style="margin: 18px 0 8px">Tài khoản mẫu</h3>
+        <div class="tw">
+          <table>
+            <thead>
+              <tr>
+                <th>Vai trò</th>
+                <th>Email</th>
+                <th>Mật khẩu</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Quản trị viên</td>
+                <td>admin@gmail.com</td>
+                <td>admin1234</td>
+              </tr>
+              <tr>
+                <td>Thành viên</td>
+                <td>minhanh.nguyen92@gmail.com</td>
+                <td>12345678</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section id="csdl">
+        <h2>2. Dữ liệu của hệ thống</h2>
+        <div class="grid">
+          <div class="card">
+            <h3>Thành viên</h3>
+            Họ tên, email (không trùng), mật khẩu đã mã hóa và vai trò (thành viên hoặc quản trị
+            viên).
+          </div>
+          <div class="card">
+            <h3>Danh mục</h3>
+            Tên và tên rút gọn, đều không trùng. Mỗi bài thuộc đúng một danh mục; danh mục còn bài
+            thì không xóa được.
+          </div>
+          <div class="card">
+            <h3>Bài viết</h3>
+            Tiêu đề, đường dẫn riêng không trùng, nội dung, ảnh, trạng thái, thời điểm đăng. Có tác
+            giả và có dấu xóa để đưa vào thùng rác. Khi thành viên bị xóa, bài của họ đi theo.
+          </div>
+          <div class="card">
+            <h3>Tag</h3>
+            Tên và tên rút gọn không trùng. Một bài có nhiều tag, một tag gắn cho nhiều bài. Có sẵn
+            tag Khác.
+          </div>
+          <div class="card">
+            <h3>Bình luận</h3>
+            Nội dung, người viết và bài được bình luận. Xóa bài hoặc xóa thành viên thì bình luận
+            liên quan cũng mất.
+          </div>
+          <div class="card">
+            <h3>Hàng đợi</h3>
+            Nơi giữ tạm các thư báo đang chờ gửi.
+          </div>
+        </div>
+        <p>
+          <b>Ba trạng thái của bài:</b>
+          nháp (chỉ tác giả thấy), đã đăng (hiện công khai) và hẹn giờ (chờ đến thời điểm tương lai
+          để tự đăng).
+        </p>
+      </section>
+      <section id="gA">
+        <h2>Nhóm A. Trang công khai</h2>
+        <article class="card" id="A1">
+          <h3>
+            <span class="tag">A1</span>
+            Trang chủ
+          </h3>
+          <dl>
+            <dt>Mục đích</dt>
+            <dd>Khách xem các bài đã đăng, bài mới nhất nằm trên cùng.</dd>
+            <dt>Ai được làm</dt>
+            <dd>Mọi người, không cần đăng nhập.</dd>
+            <dt>Luồng chính</dt>
+            <dd>
+              <ol>
+                <li>Người dùng mở trang chủ.</li>
+                <li>Hệ thống chỉ lấy các bài ở trạng thái đã đăng.</li>
+                <li>Bài được xếp theo thời điểm đăng, mới nhất trước.</li>
+                <li>Danh sách chia thành từng trang, mỗi trang 10 bài, kèm nút sang trang sau.</li>
+                <li>Khi đang tìm kiếm hoặc lọc, bộ lọc vẫn được giữ lại lúc chuyển trang.</li>
+              </ol>
+            </dd>
+            <dt class="okt">Thành công</dt>
+            <dd>Thấy danh sách bài mới nhất trước và nút phân trang.</dd>
+            <dt class="bad">Thất bại</dt>
+            <dd>Bài nháp và bài hẹn giờ chưa tới hạn không hiện.</dd>
+          </dl>
+        </article>
+        <article class="card" id="A2">
+          <h3>
+            <span class="tag">A2</span>
+            Trang chi tiết bài viết
+          </h3>
+          <dl>
+            <dt>Mục đích</dt>
+            <dd>Đọc trọn một bài viết.</dd>
+            <dt>Ai được làm</dt>
+            <dd>Mọi người cho bài đã đăng; bài chưa đăng chỉ tác giả xem được.</dd>
+            <dt>Luồng chính</dt>
+            <dd>
+              <ol>
+                <li>Người dùng bấm vào một bài.</li>
+                <li>
+                  Đường dẫn của bài dùng tên rút gọn từ tiêu đề nên dễ đọc và không trùng nhau.
+                </li>
+                <li>Trang hiện ảnh, tác giả, danh mục, các tag và toàn bộ bình luận.</li>
+              </ol>
+            </dd>
+            <dt class="okt">Thành công</dt>
+            <dd>Đúng bài, đủ thông tin.</dd>
+            <dt class="bad">Thất bại</dt>
+            <dd>
+              Đường dẫn không tồn tại thì hiện trang 404. Bài chưa đăng mà người xem không phải tác
+              giả cũng nhận 404.
+            </dd>
+          </dl>
+        </article>
+        <article class="card" id="A3">
+          <h3>
+            <span class="tag">A3</span>
+            Tìm kiếm và lọc
+          </h3>
+          <dl>
+            <dt>Mục đích</dt>
+            <dd>Tìm theo từ khóa, lọc theo danh mục hoặc tag.</dd>
+            <dt>Ai được làm</dt>
+            <dd>Mọi người.</dd>
+            <dt>Luồng chính</dt>
+            <dd>
+              <ol>
+                <li>Người dùng nhập từ khóa hoặc bấm vào một danh mục hoặc tag.</li>
+                <li>Hệ thống tìm trong tiêu đề và nội dung của các bài đã đăng.</li>
+                <li>Có thể kết hợp từ khóa, danh mục và tag cùng lúc.</li>
+                <li>Kết quả vẫn chia trang như trang chủ.</li>
+              </ol>
+            </dd>
+            <dt class="okt">Thành công</dt>
+            <dd>Chỉ hiện các bài đã đăng khớp điều kiện.</dd>
+            <dt class="bad">Thất bại</dt>
+            <dd>Không có kết quả thì hiện thông báo trống, không báo lỗi.</dd>
+          </dl>
+        </article>
+      </section>
+      <section id="gB">
+        <h2>Nhóm B. Tài khoản và bài viết</h2>
+        <article class="card" id="B1">
+          <h3>
+            <span class="tag">B1</span>
+            Đăng ký, đăng nhập, đăng xuất
+          </h3>
+          <dl>
+            <dt>Mục đích</dt>
+            <dd>Thành viên có tài khoản để viết bài và bình luận.</dd>
+            <dt>Ai được làm</dt>
+            <dd>Khách (đăng ký, đăng nhập); thành viên (đăng xuất).</dd>
+            <dt>Luồng chính</dt>
+            <dd>
+              <ol>
+                <li>
+                  Đăng ký: nhập tên, email, mật khẩu. Hệ thống kiểm tra, tạo tài khoản, đăng nhập
+                  luôn và gửi thư chào mừng đăng ký.
+                </li>
+                <li>Đăng nhập: nhập email và mật khẩu, đúng thì vào trang chủ.</li>
+                <li>Đăng xuất: kết thúc phiên làm việc.</li>
+                <li>
+                  Ngoài ra có quên mật khẩu, đặt lại mật khẩu qua thư và đổi mật khẩu khi đang đăng
+                  nhập.
+                </li>
+              </ol>
+            </dd>
+            <dt class="okt">Thành công</dt>
+            <dd>Tài khoản được tạo, có phiên đăng nhập; đăng xuất thì phiên bị hủy.</dd>
+            <dt class="bad">Thất bại</dt>
+            <dd>
+              Email trùng, mật khẩu sai hoặc thiếu thông tin thì báo lỗi và không tạo phiên. Đăng
+              nhập sai quá nhiều lần trong một phút sẽ bị tạm chặn để chống dò mật khẩu.
+            </dd>
+          </dl>
+        </article>
+        <article class="card" id="B2">
+          <h3>
+            <span class="tag">B2</span>
+            Tạo bài
+          </h3>
+          <dl>
+            <dt>Mục đích</dt>
+            <dd>Thành viên đăng bài có ảnh, một danh mục và nhiều tag.</dd>
+            <dt>Ai được làm</dt>
+            <dd>Người đã đăng nhập.</dd>
+            <dt>Luồng chính</dt>
+            <dd>
+              <ol>
+                <li>Mở trang viết bài.</li>
+                <li>
+                  Nhập tiêu đề, nội dung, chọn danh mục, chọn nhiều tag, tải ảnh và chọn trạng thái:
+                  nháp, đã đăng hoặc hẹn giờ.
+                </li>
+                <li>Với bài hẹn giờ, chọn thêm thời điểm đăng trong tương lai.</li>
+                <li>
+                  Hệ thống kiểm tra rồi lưu bài, gắn danh mục, tag và lưu ảnh vào thư mục upload.
+                </li>
+              </ol>
+            </dd>
+            <dt class="okt">Thành công</dt>
+            <dd>Bài được lưu đúng danh mục, tag, ảnh và trạng thái.</dd>
+            <dt class="bad">Thất bại</dt>
+            <dd>
+              Khách bị chuyển về trang đăng nhập. Bị từ chối nếu ảnh sai định dạng (chỉ nhận jpeg,
+              jpg, png, gif, webp) hoặc lớn hơn 2 MB, thiếu tiêu đề, nội dung dưới 10 ký tự, danh
+              mục hoặc tag không tồn tại, hoặc hẹn giờ không ở tương lai.
+            </dd>
+          </dl>
+        </article>
+        <article class="card" id="B3">
+          <h3>
+            <span class="tag">B3</span>
+            Sửa bài
+          </h3>
+          <dl>
+            <dt>Mục đích</dt>
+            <dd>Chỉ tác giả được sửa bài của mình.</dd>
+            <dt>Ai được làm</dt>
+            <dd>Tác giả của bài.</dd>
+            <dt>Luồng chính</dt>
+            <dd>
+              <ol>
+                <li>
+                  Tác giả mở form sửa và thay đổi tiêu đề, nội dung, danh mục, tag, ảnh hoặc trạng
+                  thái.
+                </li>
+                <li>
+                  Trước khi mở form và trước khi lưu, hệ thống đều kiểm tra người đang đăng nhập có
+                  đúng là tác giả không.
+                </li>
+                <li>Nếu đổi ảnh, ảnh cũ bị xóa khỏi thư mục upload.</li>
+                <li>Đường dẫn của bài không đổi dù tiêu đề được sửa.</li>
+              </ol>
+            </dd>
+            <dt class="okt">Thành công</dt>
+            <dd>Tác giả sửa và lưu được.</dd>
+            <dt class="bad">Thất bại</dt>
+            <dd>
+              Người khác cố truy cập hoặc gửi yêu cầu sửa sẽ nhận lỗi 403, dù nút Sửa đã bị ẩn. Việc
+              chặn nằm ở máy chủ, không dựa vào giao diện.
+            </dd>
+          </dl>
+        </article>
+        <article class="card" id="B4">
+          <h3>
+            <span class="tag">B4</span>
+            Thùng rác
+          </h3>
+          <dl>
+            <dt>Mục đích</dt>
+            <dd>Xóa bài chỉ đưa bài vào thùng rác, chưa mất hẳn.</dd>
+            <dt>Ai được làm</dt>
+            <dd>Tác giả của bài.</dd>
+            <dt>Luồng chính</dt>
+            <dd>
+              <ol>
+                <li>Tác giả bấm xóa: bài được đánh dấu đã xóa và biến mất khỏi trang chủ.</li>
+                <li>Tác giả mở thùng rác để xem các bài đã xóa.</li>
+                <li>Tại đây có thể khôi phục bài hoặc xóa vĩnh viễn (xóa luôn ảnh).</li>
+                <li>Mỗi lần xóa đều được ghi vào nhật ký.</li>
+              </ol>
+            </dd>
+            <dt class="okt">Thành công</dt>
+            <dd>Bài biến mất khỏi trang chủ; tác giả khôi phục hoặc xóa hẳn được.</dd>
+            <dt class="bad">Thất bại</dt>
+            <dd>
+              Người không phải tác giả không xóa, khôi phục hay xóa vĩnh viễn được (lỗi 403). Khách
+              bị chuyển về trang đăng nhập.
+            </dd>
+          </dl>
+        </article>
+      </section>
+      <section id="gC">
+        <h2>Nhóm C. Bình luận</h2>
+        <article class="card" id="C1">
+          <h3>
+            <span class="tag">C1</span>
+            Viết bình luận
+          </h3>
+          <dl>
+            <dt>Mục đích</dt>
+            <dd>Thành viên trao đổi dưới bài đã đăng.</dd>
+            <dt>Ai được làm</dt>
+            <dd>Người đã đăng nhập. Khách chỉ xem.</dd>
+            <dt>Luồng chính</dt>
+            <dd>
+              <ol>
+                <li>Thành viên nhập bình luận (tối đa 1000 ký tự) dưới bài.</li>
+                <li>Hệ thống kiểm tra bài đã được đăng, rồi lưu bình luận.</li>
+                <li>Một thư báo được xếp vào hàng đợi để gửi cho tác giả bài.</li>
+                <li>
+                  Để thư được gửi đi, cần chạy lệnh
+                  <code>php artisan queue:work</code>
+                  .
+                </li>
+              </ol>
+            </dd>
+            <dt class="okt">Thành công</dt>
+            <dd>Bình luận hiện ngay dưới bài.</dd>
+            <dt class="bad">Thất bại</dt>
+            <dd>
+              Chưa đăng nhập thì bị chuyển về trang đăng nhập; bài chưa đăng trả 404; nội dung trống
+              thì báo lỗi. Cả ba trường hợp đều không lưu.
+            </dd>
+          </dl>
+        </article>
+        <article class="card" id="C2">
+          <h3>
+            <span class="tag">C2</span>
+            Xóa bình luận
+          </h3>
+          <dl>
+            <dt>Mục đích</dt>
+            <dd>Gỡ bình luận không phù hợp.</dd>
+            <dt>Ai được làm</dt>
+            <dd>Người viết bình luận, tác giả bài và quản trị viên.</dd>
+            <dt>Luồng chính</dt>
+            <dd>
+              <ol>
+                <li>Người dùng bấm xóa bình luận.</li>
+                <li>Hệ thống kiểm tra người đó thuộc một trong ba nhóm được phép.</li>
+                <li>Bình luận bị xóa và việc xóa được ghi vào nhật ký.</li>
+              </ol>
+            </dd>
+            <dt class="okt">Thành công</dt>
+            <dd>Đúng người thì bình luận biến mất.</dd>
+            <dt class="bad">Thất bại</dt>
+            <dd>Thành viên khác gửi yêu cầu xóa sẽ nhận lỗi 403.</dd>
+          </dl>
+        </article>
+      </section>
+      <section id="gD">
+        <h2>Nhóm D. Trang quản trị</h2>
+        <article class="card" id="D1">
+          <h3>
+            <span class="tag">D1</span>
+            Vào khu vực quản trị
+          </h3>
+          <dl>
+            <dt>Mục đích</dt>
+            <dd>Giới hạn khu vực quản trị cho đúng người.</dd>
+            <dt>Ai được làm</dt>
+            <dd>Chỉ quản trị viên.</dd>
+            <dt>Luồng chính</dt>
+            <dd>
+              <ol>
+                <li>Mọi trang quản trị đều đi qua một bước kiểm tra vai trò.</li>
+                <li>Chỉ tài khoản có vai trò quản trị viên mới qua được.</li>
+              </ol>
+            </dd>
+            <dt class="okt">Thành công</dt>
+            <dd>Quản trị viên thấy các trang quản trị.</dd>
+            <dt class="bad">Thất bại</dt>
+            <dd>Khách hoặc thành viên thường nhận lỗi 403.</dd>
+          </dl>
+        </article>
+        <article class="card" id="D2">
+          <h3>
+            <span class="tag">D2</span>
+            Thống kê
+          </h3>
+          <dl>
+            <dt>Mục đích</dt>
+            <dd>Nhìn nhanh tình hình của trang.</dd>
+            <dt>Ai được làm</dt>
+            <dd>Quản trị viên.</dd>
+            <dt>Luồng chính</dt>
+            <dd>
+              <ol>
+                <li>Trang tổng quan đếm số thành viên, số bài đã đăng và số bình luận.</li>
+                <li>Đồng thời liệt kê 5 bài có nhiều bình luận nhất.</li>
+              </ol>
+            </dd>
+            <dt class="okt">Thành công</dt>
+            <dd>Các con số và danh sách hiển thị đúng với dữ liệu hiện có.</dd>
+            <dt class="bad">Thất bại</dt>
+            <dd>Không phải quản trị viên thì không vào được (lỗi 403).</dd>
+          </dl>
+        </article>
+        <article class="card" id="D3">
+          <h3>
+            <span class="tag">D3</span>
+            Danh mục và nội dung vi phạm
+          </h3>
+          <dl>
+            <dt>Mục đích</dt>
+            <dd>Quản lý danh mục và gỡ nội dung vi phạm.</dd>
+            <dt>Ai được làm</dt>
+            <dd>Quản trị viên.</dd>
+            <dt>Luồng chính</dt>
+            <dd>
+              <ol>
+                <li>Danh mục: thêm, đổi tên, xóa. Tên bắt buộc, tối đa 50 ký tự, không trùng.</li>
+                <li>
+                  Danh mục còn bài (kể cả bài trong thùng rác) thì không xóa được; cơ sở dữ liệu
+                  cũng chặn thêm một lớp nữa.
+                </li>
+                <li>
+                  Bài viết: xem mọi bài của mọi tác giả; xóa bài vi phạm là xóa vĩnh viễn kèm ảnh và
+                  có ghi nhật ký.
+                </li>
+                <li>Bình luận: xem mọi bình luận và xóa bình luận vi phạm.</li>
+              </ol>
+            </dd>
+            <dt class="okt">Thành công</dt>
+            <dd>Danh mục và nội dung được cập nhật đúng; bài bị xóa không còn xuất hiện.</dd>
+            <dt class="bad">Thất bại</dt>
+            <dd>
+              Tên danh mục trống hoặc trùng bị từ chối; danh mục còn bài báo lỗi và vẫn giữ nguyên;
+              thành viên thường không dùng được các chức năng này.
+            </dd>
+          </dl>
+        </article>
+      </section>
+      <section id="gE">
+        <h2>Nhóm E. Xử lý nền</h2>
+        <article class="card" id="E1">
+          <h3>
+            <span class="tag">E1</span>
+            Đăng bài hẹn giờ
+          </h3>
+          <dl>
+            <dt>Mục đích</dt>
+            <dd>Bài đến giờ thì tự chuyển sang đã đăng.</dd>
+            <dt>Ai được làm</dt>
+            <dd>Hệ thống tự chạy, không cần người thao tác.</dd>
+            <dt>Luồng chính</dt>
+            <dd>
+              <ol>
+                <li>Một tác vụ tự động được lên lịch chạy mỗi phút.</li>
+                <li>Mỗi lần chạy, tác vụ tìm các bài hẹn giờ đã đến hoặc qua thời điểm đăng.</li>
+                <li>
+                  Các bài đó được chuyển sang đã đăng và số bài vừa đăng được ghi vào nhật ký.
+                </li>
+                <li>
+                  Khi trình bày, cần bật bộ chạy lịch để tác vụ hoạt động liên tục:
+                  <code>php artisan schedule:work</code>
+                  .
+                </li>
+              </ol>
+            </dd>
+            <dt class="okt">Thành công</dt>
+            <dd>Bài đến hạn xuất hiện trên trang chủ.</dd>
+            <dt class="bad">Thất bại</dt>
+            <dd>Bài chưa đến giờ vẫn giữ trạng thái hẹn giờ.</dd>
+          </dl>
+        </article>
+        <article class="card" id="E2">
+          <h3>
+            <span class="tag">E2</span>
+            Thư báo khi có bình luận mới
+          </h3>
+          <dl>
+            <dt>Mục đích</dt>
+            <dd>Báo cho tác giả biết bài của mình có bình luận.</dd>
+            <dt>Ai được làm</dt>
+            <dd>Hệ thống tự gửi cho tác giả bài.</dd>
+            <dt>Luồng chính</dt>
+            <dd>
+              <ol>
+                <li>
+                  Sau khi bình luận được lưu, thư báo được xếp vào hàng đợi thay vì gửi ngay, để
+                  người bình luận không phải chờ.
+                </li>
+                <li>
+                  Bộ xử lý hàng đợi lấy thư ra và gửi, chạy bằng lệnh
+                  <code>php artisan queue:work</code>
+                  .
+                </li>
+                <li>
+                  Môi trường học tập ghi nội dung thư vào tệp nhật ký, không cần máy chủ thư thật.
+                </li>
+              </ol>
+            </dd>
+            <dt class="okt">Thành công</dt>
+            <dd>Tác giả nhận được thư báo có nội dung bình luận mới.</dd>
+            <dt class="bad">Thất bại</dt>
+            <dd>
+              Nếu việc xếp thư lỗi, hệ thống chỉ ghi nhật ký; bình luận đã lưu vẫn còn nguyên.
+            </dd>
+          </dl>
+        </article>
+      </section>
+      <section id="gF">
+        <h2>Nhóm F. Chất lượng</h2>
+        <article class="card">
+          <h3>
+            <span class="tag">F1</span>
+            Cơ sở dữ liệu, dữ liệu mẫu
+          </h3>
+          <ul>
+            <li>
+              Cơ sở dữ liệu được dựng bằng các bước tạo bảng theo đúng thứ tự để các liên kết giữa
+              bảng hoạt động.
+            </li>
+            <li>
+              Dữ liệu mẫu gồm 1 quản trị viên, 12 thành viên với tên và gmail , 3 danh mục (Công
+              nghệ, Học tập, Đời sống), 5 tag , 10 bài viết có ảnh, thêm 1 bài nháp và 1 bài hẹn
+              giờ.
+            </li>
+            <li>
+              Mỗi bài đã đăng có từ 2 đến 5 bình luận mẫu do thành viên khác tác giả viết, thời gian
+              bình luận nằm sau lúc đăng bài.
+            </li>
+            <li>
+              Có sẵn công cụ sinh dữ liệu giả cho thành viên, bài viết, danh mục, tag và bình luận,
+              dùng cho dữ liệu mẫu và kiểm thử.
+            </li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>
+            <span class="tag">F2</span>
+            Trang lỗi riêng
+          </h3>
+          <p>
+            Ba trang lỗi riêng cho 403 (không đủ quyền), 404 (không tìm thấy) và 500 (lỗi máy chủ),
+            cùng giao diện với toàn trang.
+          </p>
+        </article>
+        <article class="card">
+          <h3>
+            <span class="tag">F3</span>
+            Nhật ký sự kiện quan trọng
+          </h3>
+          <div class="tw">
+            <table>
+              <thead>
+                <tr>
+                  <th>Sự kiện</th>
+                  <th>Nơi ghi</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Đăng ký</td>
+                  <td>Nhật ký tài khoản</td>
+                </tr>
+                <tr>
+                  <td>Đăng nhập thành công</td>
+                  <td>Nhật ký tài khoản</td>
+                </tr>
+                <tr>
+                  <td>Đăng nhập thất bại</td>
+                  <td>Nhật ký tài khoản</td>
+                </tr>
+                <tr>
+                  <td>Đổi mật khẩu</td>
+                  <td>Nhật ký tài khoản</td>
+                </tr>
+                <tr>
+                  <td>Xóa bài vào thùng rác</td>
+                  <td>Nhật ký chung</td>
+                </tr>
+                <tr>
+                  <td>Xóa vĩnh viễn bài</td>
+                  <td>Nhật ký chung</td>
+                </tr>
+                <tr>
+                  <td>Quản trị viên xóa bài vi phạm</td>
+                  <td>Nhật ký chung</td>
+                </tr>
+                <tr>
+                  <td>Xóa bình luận</td>
+                  <td>Nhật ký chung</td>
+                </tr>
+                <tr>
+                  <td>Đăng bài hẹn giờ</td>
+                  <td>Nhật ký chung</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Mật khẩu không bao giờ được ghi vào nhật ký.</p>
+        </article>
+        <article class="card">
+          <h3>
+            <span class="tag">F4</span>
+            Kiểm thử
+          </h3>
+          <p>
+            Có
+            <b>16 kiểm thử chức năng</b>
+            và
+            <b>4 kiểm thử đơn vị</b>
+            . Danh sách đầy đủ:
+          </p>
+          <ul>
+            <li>
+              <b>Thành công:</b>
+              người dùng và dữ liệu hợp lệ, hệ thống cho phép làm và cho kết quả đúng (ví dụ đăng
+              nhập đúng mật khẩu, tạo bài đủ thông tin).
+            </li>
+            <li>
+              <b>Thất bại:</b>
+              dữ liệu sai hoặc người dùng không có quyền, hệ thống phải từ chối hoặc chặn (ví dụ sai
+              mật khẩu, ảnh sai định dạng, người khác sửa bài nhận lỗi 403). Kiểm thử được tính là
+              đạt khi hệ thống từ chối đúng.
+            </li>
+            <li>
+              <b>Thành công và thất bại:</b>
+              một kiểm thử kiểm tra cả hai trường hợp trên (ví dụ trang chủ hiện bài đã đăng nhưng
+              ẩn bài nháp).
+            </li>
+          </ul>
+          <div class="tw">
+            <table>
+              <thead>
+                <tr>
+                  <th>STT</th>
+                  <th>Nhóm</th>
+                  <th>Nội dung kiểm tra</th>
+                  <th>Loại ca</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Tài khoản</td>
+                  <td>Đăng nhập đúng email và mật khẩu</td>
+                  <td>Thành công</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Tài khoản</td>
+                  <td>Đăng nhập sai mật khẩu bị từ chối và có ghi nhật ký</td>
+                  <td>Thất bại</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>Bài viết</td>
+                  <td>Thành viên tạo bài có tag và ảnh</td>
+                  <td>Thành công</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>Bài viết</td>
+                  <td>Ảnh sai định dạng hoặc thiếu thông tin bị từ chối</td>
+                  <td>Thất bại</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>Bài viết</td>
+                  <td>Tác giả sửa được bài, người khác nhận lỗi 403</td>
+                  <td>Thành công và thất bại</td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>Bài viết</td>
+                  <td>Trang chủ chỉ hiện bài đã đăng, mới nhất trước, có phân trang</td>
+                  <td>Thành công và thất bại</td>
+                </tr>
+                <tr>
+                  <td>7</td>
+                  <td>Bài viết</td>
+                  <td>Chi tiết bài theo đường dẫn; đường dẫn lạ hoặc bài nháp trả 404</td>
+                  <td>Thành công và thất bại</td>
+                </tr>
+                <tr>
+                  <td>8</td>
+                  <td>Thùng rác</td>
+                  <td>Tác giả xóa bài vào thùng rác rồi khôi phục</td>
+                  <td>Thành công</td>
+                </tr>
+                <tr>
+                  <td>9</td>
+                  <td>Thùng rác</td>
+                  <td>Người khác không xóa, khôi phục hay xóa vĩnh viễn được bài</td>
+                  <td>Thất bại</td>
+                </tr>
+                <tr>
+                  <td>10</td>
+                  <td>Bình luận</td>
+                  <td>Thành viên bình luận và tác giả bài nhận thư báo qua hàng đợi</td>
+                  <td>Thành công</td>
+                </tr>
+                <tr>
+                  <td>11</td>
+                  <td>Bình luận</td>
+                  <td>Khách, nội dung trống hoặc bài nháp thì không lưu bình luận</td>
+                  <td>Thất bại</td>
+                </tr>
+                <tr>
+                  <td>12</td>
+                  <td>Bình luận</td>
+                  <td>Thành viên khác xóa bình luận nhận lỗi 403</td>
+                  <td>Thất bại</td>
+                </tr>
+                <tr>
+                  <td>13</td>
+                  <td>Quản trị</td>
+                  <td>Quản trị viên mở trang thống kê</td>
+                  <td>Thành công</td>
+                </tr>
+                <tr>
+                  <td>14</td>
+                  <td>Quản trị</td>
+                  <td>Khách và thành viên vào khu quản trị nhận lỗi 403</td>
+                  <td>Thất bại</td>
+                </tr>
+                <tr>
+                  <td>15</td>
+                  <td>Trang lỗi</td>
+                  <td>Trang 404 dùng giao diện riêng</td>
+                  <td>Thành công</td>
+                </tr>
+                <tr>
+                  <td>16</td>
+                  <td>Bài hẹn giờ</td>
+                  <td>Tự động đăng bài đến hạn, bài chưa đến hạn giữ nguyên</td>
+                  <td>Thành công và thất bại</td>
+                </tr>
+                <tr>
+                  <td>17</td>
+                  <td>Kiểm thử đơn vị</td>
+                  <td>Quyền xóa bình luận: người viết, tác giả bài, quản trị viên được phép</td>
+                  <td>Thành công</td>
+                </tr>
+                <tr>
+                  <td>18</td>
+                  <td>Kiểm thử đơn vị</td>
+                  <td>Quyền xóa bình luận: thành viên không liên quan bị từ chối</td>
+                  <td>Thất bại</td>
+                </tr>
+                <tr>
+                  <td>19</td>
+                  <td>Kiểm thử đơn vị</td>
+                  <td>Nhận biết đúng tác giả của bài</td>
+                  <td>Thành công và thất bại</td>
+                </tr>
+                <tr>
+                  <td>20</td>
+                  <td>Kiểm thử đơn vị</td>
+                  <td>Chỉ trạng thái đã đăng mới được coi là đã đăng</td>
+                  <td>Thành công và thất bại</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>
